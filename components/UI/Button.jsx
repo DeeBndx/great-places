@@ -16,7 +16,7 @@ const Button = (props) => {
             style={{ marginRight: 4 }}
           />
         ) : null}
-        <Text style={{ ...styles.text, color: props.color ? props.color : Colors.Primary }}>{props.title}</Text>
+        <Text style={{ ...styles.text, color: props.color ? props.color : Colors.Secondary }}>{props.title}</Text>
       </View>
     </TouchableNativeFeedback>
   );
@@ -37,6 +37,8 @@ const styles = StyleSheet.create({
 
   text: {
     fontFamily: "poppinsBold",
+    textTransform: "uppercase",
+    letterSpacing: 1.5,
     fontSize: 14,
   },
 });
