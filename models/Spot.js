@@ -1,7 +1,8 @@
 class Spot {
-  constructor(id, title){
+  constructor(id, title, imageUri){
     this.id = id,
-    this.title = title
+    this.title = title,
+    this.imageUri = imageUri
   }
 }
 

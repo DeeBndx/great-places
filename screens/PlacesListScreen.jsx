@@ -18,10 +18,9 @@ const PlacesListScreen = (props) => {
       <FlatList
         data={spots}
         keyExtractor={(item) => item.id}
-        renderItem={(x) => {
-          const y = x.item;
-
-          return <SpotItem image={y.imageUrl} heading={y.title} address={y.address} />;
+        renderItem={(item) => {
+          const x = item.item;
+          return <SpotItem image={x.imageUri} heading={x.title} address={x.address} />;
         }}
       />
     </ScreenWrapper>

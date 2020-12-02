@@ -1,16 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, StyleSheet, Image, Alert } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import * as Permissions from "expo-permissions";
-
 
 import { Text } from "./Texts";
 import Button from "./UI/Button";
 
 const ImageSelect = (props) => {
-  
+  const [TakenImg, setTakenImg] = useState();
+
   const verifyPermissions = async () => {
-    const result = await Permissions.askAsync(Permissions.CAMERA, Permissions.CAMERA_ROLL);
+    const result = await Permissions.askAsync(
+      Permissions.CAMERA,
+      Permissions.CAMERA_ROLL
+    );
 
     if (result.status !== "granted") {
       Alert.alert("Insufficient permissions!", "The app needs access to your camera.", [
@@ -19,24 +22,34 @@ const ImageSelect = (props) => {
       return false;
     }
 
-    return true
+    return true;
   };
-  
+
   const takePhotoHandler = async () => {
     const hasPermissions = await verifyPermissions();
 
-    if(!hasPermissions) {
+    if (!hasPermissions) {
       return;
     }
-    
-    ImagePicker.launchCameraAsync();
+
+    const image = await ImagePicker.launchCameraAsync({
+      allowsEditing: true,
+      aspect: [3, 2],
+      quality: 0.45,
+    });
+
+    setTakenImg(image.uri);
+    props.onImageTake(image.uri);
   };
 
   return (
-    <View style={{...styles.imagePicker, ...props.style}}>
+    <View style={{ ...styles.imagePicker, ...props.style }}>
       <View style={styles.imagePreview}>
-        <Text>No Photo</Text>
-        <Image style={styles.image} />
+        {TakenImg ? (
+          <Image style={styles.image} source={{ uri: TakenImg }} />
+        ) : (
+          <Text>No Photo</Text>
+        )}
       </View>
       <Button title="Take Photo" onPress={takePhotoHandler} />
     </View>
@@ -45,15 +58,15 @@ const ImageSelect = (props) => {
 
 const styles = StyleSheet.create({
   imagePicker: {
-    alignItems: "center"
+    alignItems: "center",
   },
-  
+
   imagePreview: {
     width: "100%",
     height: 200,
     marginBottom: 16,
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
   },
 
   image: {

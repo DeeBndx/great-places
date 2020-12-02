@@ -6,18 +6,24 @@ import { useDispatch } from "react-redux";
 import { Text, Title } from "../components/Texts";
 import Button from "../components/UI/Button";
 import Colors from "../constants/Colors";
-import ImagePicker from "../components/ImageSelect";
+import ImageSelect from "../components/ImageSelect";
 
 import * as spotActions from "../store/actions/spotActions";
 import ScreenWrapper from "../components/UI/ScreenWrapper";
 
 const NewPlaceScreen = (props) => {
   const [SpotName, setSpotName] = useState("");
+  const [SelectedImage, setSelectedImage] = useState();
 
+  const dispatch = useDispatch();
 
   const saveSpot = () => {
-    useDispatch(spotActions.ADD_SPOT(SpotName));
+    dispatch(spotActions.addSpot(SpotName, SelectedImage));
     props.navigation.goBack();
+  };
+
+  const imageTakenHandler = (imagePath) => {
+    setSelectedImage(imagePath);
   };
 
   return (
@@ -31,7 +37,7 @@ const NewPlaceScreen = (props) => {
             value={SpotName}
             onChangeText={setSpotName}
           />
-          <ImagePicker style={{ marginBottom: 40 }} />
+          <ImageSelect style={{ marginBottom: 40 }} onImageTake={imageTakenHandler} />
           <Button title="Save Spot" onPress={saveSpot} />
         </View>
       </ScrollView>
