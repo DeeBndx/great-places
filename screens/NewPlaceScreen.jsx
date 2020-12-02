@@ -10,6 +10,7 @@ import ImageSelect from "../components/ImageSelect";
 
 import * as spotActions from "../store/actions/spotActions";
 import ScreenWrapper from "../components/UI/ScreenWrapper";
+import LocationPicker from "../components/LocationPicker";
 
 const NewPlaceScreen = (props) => {
   const [SpotName, setSpotName] = useState("");
@@ -39,8 +40,9 @@ const NewPlaceScreen = (props) => {
             placeholderTextColor={Colors.Secondary + "63"}
           />
           <ImageSelect style={{ marginBottom: 40 }} onImageTake={imageTakenHandler} />
-          <Button title="Save Spot" onPress={saveSpot} />
+          <LocationPicker />
         </View>
+        <Button title="Save Spot" onPress={saveSpot} style={styles.SaveButton} />
       </ScrollView>
     </ScreenWrapper>
   );
@@ -55,7 +57,12 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     marginTop: 16,
     marginBottom: 48,
-    color: Colors.Secondary
+    color: Colors.Secondary,
+  },
+  SaveButton: {
+    // position: "absolute",
+    // bottom: 40,
+    alignSelf: "center",
   },
 });
 

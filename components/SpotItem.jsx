@@ -7,15 +7,14 @@ import {
   Platform,
   Dimensions,
 } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import Colors from "../constants/Colors";
 import { Heading, Text } from "./Texts";
 
 import Button from "./UI/Button";
 
 const SpotItem = (props) => {
-  return Platform.OS === "android" ? (
-    <TouchableNativeFeedback style={props.style}>
+  return (
+    <TouchableNativeFeedback style={props.style} onPress={props.onPress}>
       <View>
         <Image style={styles.image} source={{ uri: props.image }} />
         <View style={styles.content}>
@@ -24,16 +23,6 @@ const SpotItem = (props) => {
         </View>
       </View>
     </TouchableNativeFeedback>
-  ) : (
-    <TouchableOpacity style={props.style}>
-      <View>
-        <Image style={styles.image} source={{ uri: props.image }} />
-        <View style={styles.content}>
-          <Heading style={styles.text}>{props.heading}</Heading>
-          <Text style={styles.text}>{props.address}</Text>
-        </View>
-      </View>
-    </TouchableOpacity>
   );
 };
 
