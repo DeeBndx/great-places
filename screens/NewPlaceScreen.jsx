@@ -36,6 +36,7 @@ const NewPlaceScreen = (props) => {
             placeholder="Spot name"
             value={SpotName}
             onChangeText={setSpotName}
+            placeholderTextColor={Colors.Secondary + "63"}
           />
           <ImageSelect style={{ marginBottom: 40 }} onImageTake={imageTakenHandler} />
           <Button title="Save Spot" onPress={saveSpot} />
@@ -54,6 +55,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     marginTop: 16,
     marginBottom: 48,
+    color: Colors.Secondary
   },
 });
 
