@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { View, StyleSheet, FlatList } from "react-native";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { loadSpots } from "../store/actions/spotActions";
 
 import HeaderButton from "../components/UI/HeaderButton";
 import { Title } from "../components/Texts";
@@ -11,6 +12,12 @@ import SpotItem from "../components/SpotItem";
 import Colors from "../constants/Colors";
 
 const PlacesListScreen = (props) => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(loadSpots());
+  }, [dispatch]);
+
   const spots = useSelector((state) => state.spots.spots);
 
   return (
@@ -27,15 +34,13 @@ const PlacesListScreen = (props) => {
   );
 };
 
-const styles = StyleSheet.create({
-  
-});
+const styles = StyleSheet.create({});
 
 PlacesListScreen.navigationOptions = (navData) => {
   return {
     headerTitle: "All Spots",
     headerRight: () => (
-      <HeaderButtons HeaderButtonComponent={HeaderButton}> 
+      <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item
           title="Add Spot"
           iconName="add-box"

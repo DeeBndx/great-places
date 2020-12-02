@@ -6,8 +6,9 @@ import { enableScreens } from "react-native-screens";
 import { createStore, combineReducers, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
 import ReduxThunk from "redux-thunk";
-
 import spotReducer from "./store/reducers/spotReducer";
+
+import { init } from "./helpers/db";
 
 import PlacesNavigator from "./navigation/PlacesNavigator";
 
@@ -21,13 +22,20 @@ const fetchFonts = () => {
   });
 };
 
-
-
 const rootReducer = combineReducers({
   spots: spotReducer,
 });
 
-const store = createStore(rootReducer, applyMiddleware(ReduxThunk))
+const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
+
+init()
+  .then(() => {
+    console.log("Initialized Database");
+  })
+  .catch((err) => {
+    console.log("Initializing database failed");
+    console.log(err);
+  });
 
 export default function App() {
   const [FontLoaded, setFontLoaded] = useState(false);
