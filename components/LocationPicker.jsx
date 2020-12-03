@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, StyleSheet, ActivityIndicator, Alert } from "react-native";
 
 import * as Location from "expo-location";
@@ -13,6 +13,17 @@ import MapPreview from "./MapPreview";
 const LocationPicker = (props) => {
   const [Loading, setLoading] = useState(false);
   const [PickedLocation, setPickedLocation] = useState();
+
+  const locationPickedFromMap = props.navigation.getParam("pickedLocation");
+
+  const { onLocationPicked } = props;
+
+  useEffect(() => {
+    if (locationPickedFromMap) {
+      setPickedLocation(locationPickedFromMap);
+      props.onLocationPicked(locationPickedFromMap);
+    }
+  }, [locationPickedFromMap, onLocationPicked]);
 
   const verifyPermissions = async () => {
     const result = await Permissions.askAsync(Permissions.LOCATION);
@@ -44,11 +55,20 @@ const LocationPicker = (props) => {
         lat: location.coords.latitude,
         lng: location.coords.longitude,
       });
+
+      props.onLocationPicked({
+        lat: location.coords.latitude,
+        lng: location.coords.longitude,
+      });
     } catch (err) {
       Alert.alert("Could not get location", "", [{ text: "Okay" }]);
     }
 
     setLoading(false);
+  };
+
+  const pickMapLocation = () => {
+    props.navigation.navigate("Map");
   };
 
   return (
@@ -60,7 +80,18 @@ const LocationPicker = (props) => {
           <Text>No location chosen</Text>
         )}
       </MapPreview>
-      <Button title="Use Your Location" onPress={getLocationHandler} />
+      <View style={styles.actions}>
+        <Button
+          style={styles.mapActions}
+          title="Use Your Location"
+          onPress={getLocationHandler}
+        />
+        <Button
+          style={styles.mapActions}
+          title="Pick from Map"
+          onPress={pickMapLocation}
+        />
+      </View>
     </View>
   );
 };
@@ -73,8 +104,12 @@ const styles = StyleSheet.create({
 
   mapContainer: {
     borderWidth: 2,
-    borderColor: Colors.Accent
-  }
+    borderColor: Colors.Accent,
+  },
+
+  mapActions: {
+    marginVertical: 8,
+  },
 });
 
 export default LocationPicker;

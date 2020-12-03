@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { View, StyleSheet, Alert } from "react-native";
 import { ScrollView, TextInput } from "react-native-gesture-handler";
 import { useDispatch } from "react-redux";
@@ -15,17 +15,22 @@ import LocationPicker from "../components/LocationPicker";
 const NewPlaceScreen = (props) => {
   const [SpotName, setSpotName] = useState("");
   const [SelectedImage, setSelectedImage] = useState();
+  const [SelectedLocation, setSelectedLocation] = useState();
 
   const dispatch = useDispatch();
 
   const saveSpot = () => {
-    dispatch(spotActions.addSpot(SpotName, SelectedImage));
+    dispatch(spotActions.addSpot(SpotName, SelectedImage, SelectedLocation));
     props.navigation.goBack();
   };
 
   const imageTakenHandler = (imagePath) => {
     setSelectedImage(imagePath);
   };
+
+  const locationPickedHandler = useCallback((loaction) => {
+    setSelectedLocation(loaction);
+  }, []);
 
   return (
     <ScreenWrapper>
@@ -40,7 +45,10 @@ const NewPlaceScreen = (props) => {
             placeholderTextColor={Colors.Secondary + "63"}
           />
           <ImageSelect style={{ marginBottom: 40 }} onImageTake={imageTakenHandler} />
-          <LocationPicker />
+          <LocationPicker
+            navigation={props.navigation}
+            onLocationPicked={locationPickedHandler}
+          />
         </View>
         <Button title="Save Spot" onPress={saveSpot} style={styles.SaveButton} />
       </ScrollView>
@@ -63,6 +71,7 @@ const styles = StyleSheet.create({
     // position: "absolute",
     // bottom: 40,
     alignSelf: "center",
+    backgroundColor: Colors.Success,
   },
 });
 

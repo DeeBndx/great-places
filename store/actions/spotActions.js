@@ -9,8 +9,6 @@ export const loadSpots = () => {
   return async (dispatch) => {
     try {
       const dbResult = await fetchSpots();
-
-      console.log(dbResult);
       
       dispatch({
         type: SET_SPOTS,
@@ -40,8 +38,6 @@ export const addSpot = (title, image) => {
         15.6,
         12.3
       );
-
-      console.log(dbResult);
 
       dispatch({
         type: ADD_SPOT,

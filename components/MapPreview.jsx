@@ -13,8 +13,6 @@ const MapPreview = (props) => {
     imageUrl = `https://maps.googleapis.com/maps/api/staticmap?center=${props.location.lat},${props.location.lng}&zoom=12&size=400x200&maptype=roadmap&markers=color:red%7Clabel:A%7C${props.location.lat},${props.location.lng}&key=${ENV.googleApiKey}`;
   }
 
-  console.log("MapPreview props => ", props);
-
   return (
     <View style={{ ...styles.container, ...props.style }}>
       {props.location ? (
@@ -30,6 +28,8 @@ const styles = StyleSheet.create({
   container: {
     width: "100%",
     height: 200,
+    alignItems: "center",
+    justifyContent: "center"
   },
 
   mapImage: {
