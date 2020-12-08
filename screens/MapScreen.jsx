@@ -11,9 +11,12 @@ const MapScreen = (props) => {
   const [SelectedLocation, setSelectedLocation] = useState();
   const [FailAttemptCount, setFailAttemptCount] = useState(0);
 
+  const isReadonly = props.navigation.getParam("readonly");
+  const initialLocation = props.navigation.getParam("initialLocation");
+  
   let mapRegion = {
-    latitude: 37.78,
-    longitude: -122.43,
+    latitude: initialLocation ? initialLocation.lat : 37.78,
+    longitude: initialLocation ? initialLocation.lng : -122.43,
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,
   };
@@ -100,6 +103,14 @@ const MapScreen = (props) => {
   }, [savePickedLocation]);
 
   let markerCoordinates;
+
+  if(initialLocation){
+    markerCoordinates = {
+      latitude: initialLocation.lat,
+      longitude: initialLocation.lng,
+    }
+  }
+  
   if (SelectedLocation) {
     markerCoordinates = {
       latitude: SelectedLocation.lat,
@@ -114,7 +125,7 @@ const MapScreen = (props) => {
   }
 
   return (
-    <MapView style={styles.map} region={mapRegion} onPress={selectLocationHandler}>
+    <MapView style={styles.map} region={mapRegion} onPress={isReadonly ? null : selectLocationHandler}>
       {markerCoordinates && (
         <Marker title="Picked Location" coordinate={markerCoordinates}></Marker>
       )}
@@ -130,12 +141,13 @@ const styles = StyleSheet.create({
 
 MapScreen.navigationOptions = (navData) => {
   const saveFunc = navData.navigation.getParam("saveLocation");
-
+  const isReadonly = navData.navigation.getParam("readonly");
+  
   return {
     headerTitle: "Map",
     headerRight: () => (
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
-        <Item title="Add Spot" iconName="check" onPress={saveFunc} />
+        <Item title="Add Spot" iconName="check" onPress={isReadonly ? null : saveFunc} />
       </HeaderButtons>
     ),
   };

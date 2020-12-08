@@ -21,13 +21,25 @@ const PlacesListScreen = (props) => {
   const spots = useSelector((state) => state.spots.spots);
 
   return (
-    <ScreenWrapper>
+    <ScreenWrapper style={{paddingHorizontal: 24}}>
       <FlatList
         data={spots}
         keyExtractor={(item) => item.id}
         renderItem={(item) => {
           const x = item.item;
-          return <SpotItem image={x.imageUri} heading={x.title} address={x.address} />;
+          return (
+            <SpotItem
+              image={x.imageUri}
+              heading={x.title}
+              address={x.address}
+              onPress={() => {
+                props.navigation.navigate({
+                  routeName: "PlaceDetail",
+                  params: { item: x },
+                });
+              }}
+            />
+          );
         }}
       />
     </ScreenWrapper>

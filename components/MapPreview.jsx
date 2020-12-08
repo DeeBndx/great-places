@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Image, View } from "react-native";
+import { StyleSheet, Image, View, TouchableOpacity } from "react-native";
 
 import ENV from "../env";
 
@@ -14,13 +14,15 @@ const MapPreview = (props) => {
   }
 
   return (
-    <View style={{ ...styles.container, ...props.style }}>
-      {props.location ? (
-        <Image style={styles.mapImage} source={{ uri: imageUrl }} />
-      ) : (
-        props.children
-      )}
-    </View>
+    <TouchableOpacity style={styles.container} onPress={props.onPress}>
+      <View style={{...props.style }}>
+        {props.location ? (
+          <Image style={styles.mapImage} source={{ uri: imageUrl }} />
+        ) : (
+          props.children
+        )}
+      </View>
+    </TouchableOpacity>
   );
 };
 
@@ -28,8 +30,6 @@ const styles = StyleSheet.create({
   container: {
     width: "100%",
     height: 200,
-    alignItems: "center",
-    justifyContent: "center"
   },
 
   mapImage: {
